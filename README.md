@@ -1,6 +1,8 @@
 # erosha
 
 ## Project setup
+https://cli.vuejs.org/guide/installation.html
+https://nklayman.github.io/vue-cli-plugin-electron-builder/guide/#installation
 ```
 npm install
 ```
