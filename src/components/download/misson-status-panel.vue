@@ -28,9 +28,9 @@
   </div>
   <div class="border p-1">
     <div class="flex">
-      <div class="w-1/2">URL</div>
-      <div class="w-1/6">Status</div>
-      <div class="w-2/6">Progress</div>
+      <div class="w-1/2 truncate">URL</div>
+      <div class="w-1/6 truncate">Status</div>
+      <div class="w-2/6 truncate">Progress</div>
     </div>
   </div>
   <div class="border p-1 h-48 overflow-y-auto">

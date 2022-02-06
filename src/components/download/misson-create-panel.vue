@@ -1,5 +1,31 @@
-<template>
-  <div class="flex justify-center">
+<template v-slot="parent">
+  <div
+    class="
+      flex flex-col
+      justify-center
+      gap-y-2
+      items-center
+      w-5/6
+      min-h-[40%]
+      relative
+      bg-zinc-50
+      shadow-md
+    "
+  >
+    <x-icon
+      class="
+        absolute
+        right-2
+        top-2
+        h-6
+        w-6
+        text-gray-200
+        hover:text-gray-400
+        cursor-pointer
+      "
+      @click.self="close"
+    />
+    <h2 class="text-xl font-bold">New Mission</h2>
     <div class="w-2/3 relative h-11 flex items-center">
       <input
         class="
@@ -18,6 +44,7 @@
         placeholder="https://example.com"
         v-model="inputUrl"
         @input="handleInput"
+        @keydown.enter.stop="create"
       />
       <span class="absolute inline-block h-6 w-6 -left-7">
         <check-circleIcon class="h-6 w-6 text-green-600" v-show="isSupport" />
@@ -40,15 +67,19 @@ import {
   PlusCircleIcon,
   CheckCircleIcon,
   XCircleIcon,
+  XIcon,
 } from "@heroicons/vue/outline";
 export default {
-  components: { PlusCircleIcon, CheckCircleIcon, XCircleIcon },
+  components: { XIcon, PlusCircleIcon, CheckCircleIcon, XCircleIcon },
   data: () => ({
     // inputUrl: "https://www.wnacg.org/photos-index-aid-140449.html",
     inputUrl: "",
     isSupport: false,
     lock: false,
   }),
+  props: {
+    close: Function,
+  },
   computed: {},
   methods: {
     create() {
@@ -58,6 +89,7 @@ export default {
       }
       window.api.send("download-create", this.inputUrl);
       this.inputUrl = "";
+      this.isSupport = false;
     },
     async isSupportUrl(url) {
       console.log("url", url);
