@@ -43,7 +43,6 @@ export class BaseDownloader extends EventEmitter {
             await this._downloadImage();
         }
         await this.end();
-        this.emit('end');
     }
 
     async _setSavePath() {
@@ -136,7 +135,7 @@ export class BaseDownloader extends EventEmitter {
     }
 
     async end() {
-        const metadata = this.getMetadata;
+        const metadata = this.getMetadata();
         this.log(JSON.stringify(metadata));
         this.emit('end', metadata);
     }

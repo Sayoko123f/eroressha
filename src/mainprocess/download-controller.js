@@ -7,18 +7,15 @@ export class DownloadController extends EventEmitter {
     constructor() {
         super();
         this.PID = 1;
-        this.missons = [];
+        this.missions = [];
         ipcMain.on('download-start', (event, PID) => {
-            const index = this._findMissonIndexByPID(PID);
-            if (index === -1) {
+            const mission = this._findMissionByPID(PID);
+            if (!mission || mission.status !== 0) {
                 return;
             }
-            if (this.missons[index].status !== 0) {
-                return;
-            }
-            this.missons[index].dl.emit('start');
-            this.missons[index].status = 1;
-            this.sendToviewMissonStatus(PID);
+            mission.dl.emit('start');
+            mission.status = 1;
+            this.sendToviewMissionStatus(PID);
         });
 
         ipcMain.handle('download-isSupportUrl', (event, url) => {
@@ -42,7 +39,7 @@ export class DownloadController extends EventEmitter {
                 return;
             }
             const { PID } = o;
-            this.sendToviewMissonStatus(PID);
+            this.sendToviewMissionStatus(PID);
         })
     }
 
@@ -56,7 +53,7 @@ export class DownloadController extends EventEmitter {
         console.log('dl', dl);
         if (dl) {
             const obj = this._makeDownloaderStatusObj(dl, url);
-            this.missons.push(obj);
+            this.missions.push(obj);
             return { PID: obj.PID };
         }
         return null;
@@ -66,11 +63,13 @@ export class DownloadController extends EventEmitter {
         const PID = this.PID++;
         const dl = new dlConsturctor(url);
         dl.on('log', (args) => {
+            const mission = this._findMissionByPID(PID);
             console.log('on log PID:', PID);
             console.log(args);
             if (!BrowserWindow.getAllWindows().length) {
                 return;
             }
+            mission.logs.push(args);
             this.win.webContents.send('download-log', PID, args);
         });
 
@@ -79,20 +78,23 @@ export class DownloadController extends EventEmitter {
                 return;
             }
             console.log('on log PID:', PID);
-            this.missons[this._findMissonIndexByPID(PID)].progress = args;
+            this._findMissionByPID(PID).progress = args;
             this.win.webContents.send('download-progress', PID, args);
         })
 
         dl.on('end', (metadata) => {
-            const index = this._findMissonIndexByPID(PID);
-            if (this.missons[index].status !== 1) {
+            const mission = this._findMissionByPID(PID);
+            console.log(mission);
+            if (mission.status !== 1) {
                 throw new Error(`Unexpected Status PID: ${PID}.`,);
             }
-            this.missons[index].status = 2;
+            console.log('metadata=', metadata);
+            mission.status = 2;
             for (const prop in metadata) {
-                this.missons[index].meta[prop] = metadata[prop];
+                mission.meta[prop] = metadata[prop];
             }
-            this.sendToviewMissonStatus(PID);
+            console.log(mission);
+            this.sendToviewMissionStatus(PID);
         });
         return {
             dl,
@@ -108,13 +110,13 @@ export class DownloadController extends EventEmitter {
         };
     }
 
-    _findMissonIndexByPID(PID) {
-        return this.missons.findIndex(e => e.PID === PID);
+    _findMissionByPID(PID) {
+        return this.missions.find(e => e.PID === PID);
     }
 
-    sendToviewMissonStatus(PID) {
+    sendToviewMissionStatus(PID) {
         const props = ["status", "logs", "downloaded", "progress", "albumUrl", "meta"];
-        const ref = this.missons.find(e => e.PID === PID);
+        const ref = this._findMissionByPID(PID);
         const req = { PID };
         for (const o of props) {
             req[o] = ref[o];

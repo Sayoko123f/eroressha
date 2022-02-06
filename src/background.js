@@ -28,7 +28,7 @@ async function createWindow() {
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
     }
   })
-  
+
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
@@ -63,41 +63,40 @@ app.on('activate', () => {
 app.on('ready', async () => {
   if (isDevelopment && !process.env.IS_TEST) {
     // Install Vue Devtools
-    try {
-      await installExtension(VUEJS3_DEVTOOLS)
-    } catch (e) {
-      console.error('Vue Devtools failed to install:', e.toString())
-    }
+    // try {
+    //   await installExtension(VUEJS3_DEVTOOLS)
+    // } catch (e) {
+    //   console.error('Vue Devtools failed to install:', e.toString())
+    // }
   }
   console.log('app when Ready.');
   app[Symbol('download')] = new DownloadController();
   const win = await createWindow();
-  
+
   // TEST!!!
   // ipcMain.on('hello-message', (event, args) => {
-    //   console.log('In Main on hello-message');
-    //   console.log(args);
-    //   console.log('Your args:', args);
-    //   win.webContents.send('fromMain', args);
-    // });
-    
-  })
-  
-  // Exit cleanly on request from parent process in development mode.
-  if (isDevelopment) {
-    if (process.platform === 'win32') {
-      process.on('message', (data) => {
-        if (data === 'graceful-exit') {
-          app.quit()
-        }
-      })
-    } else {
-      process.on('SIGTERM', () => {
+  //   console.log('In Main on hello-message');
+  //   console.log(args);
+  //   console.log('Your args:', args);
+  //   win.webContents.send('fromMain', args);
+  // });
+
+})
+
+// Exit cleanly on request from parent process in development mode.
+if (isDevelopment) {
+  if (process.platform === 'win32') {
+    process.on('message', (data) => {
+      if (data === 'graceful-exit') {
         app.quit()
-      })
-    }
+      }
+    })
+  } else {
+    process.on('SIGTERM', () => {
+      app.quit()
+    })
   }
-  
+}
+
   // app.whenReady().then(() => {
     // })
-    
