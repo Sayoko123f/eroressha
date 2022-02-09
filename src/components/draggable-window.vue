@@ -21,7 +21,10 @@
         <x-icon />
       </span>
     </div>
-    <div class="p-2 bg-zinc-50 overflow-auto max-h-[384px] flex flex-col">
+    <div
+      class="p-2 bg-zinc-50 overflow-auto max-h-[384px] flex flex-col"
+      ref="box"
+    >
       <div v-for="(line, i) in lines" :key="i">{{ line }}</div>
     </div>
   </div>
@@ -47,6 +50,16 @@ export default {
   beforeUnmount() {
     document.onmouseup = null;
     document.onmousemove = null;
+  },
+  watch: {
+    lines: {
+      handler: function () {
+        this.$nextTick(() => {
+          this.$refs.box.scrollTop = this.$refs.box.scrollHeight;
+        });
+      },
+      deep: true,
+    },
   },
   methods: {
     handleMouseDown(e) {
