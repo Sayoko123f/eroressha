@@ -1,14 +1,15 @@
 <script>
-import downloadMainPanel from "./download/download-main-panel.vue";
-// import test from "./test.vue";
-
-export default {
-  // components: { test, downloadMainPanel },
-  components: { downloadMainPanel },
-};
+export default {};
 </script>
 
 <template>
-  <test />
-  <download-main-panel />
+  <router-link class="hover:text-sky-500" :to="{ name: 'download' }"
+    >Download</router-link
+  >
+  <router-link class="hover:text-sky-500" :to="{ name: 'data-manager' }"
+    >Data Manager</router-link
+  >
+  <router-link class="hover:text-sky-500" :to="{ name: 'viewer' }"
+    >Viewer</router-link
+  >
 </template>

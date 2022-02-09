@@ -23,7 +23,7 @@
         hover:text-gray-400
         cursor-pointer
       "
-      @click.self="close"
+      @click.self.stop="close"
     />
     <h2 class="text-xl font-bold">New Mission</h2>
     <div class="w-2/3 relative h-11 flex items-center">

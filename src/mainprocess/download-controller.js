@@ -101,7 +101,6 @@ export class DownloadController extends EventEmitter {
             status: 0,// 0 init, 1 downloading, 2 finished
             PID,
             logs: [],
-            downloaded: 0,
             progress: 0,
             albumUrl: dl.albumUrl,
             meta: {
@@ -115,7 +114,7 @@ export class DownloadController extends EventEmitter {
     }
 
     sendToviewMissionStatus(PID) {
-        const props = ["status", "logs", "downloaded", "progress", "albumUrl", "meta"];
+        const props = ["status", "logs", "progress", "albumUrl", "meta"];
         const ref = this._findMissionByPID(PID);
         const req = { PID };
         for (const o of props) {
