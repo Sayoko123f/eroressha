@@ -1,4 +1,4 @@
-import { shell, ipcMain } from "electron";
+import { shell, ipcMain, clipboard } from "electron";
 import path from "path";
 
 export class ShellController {
@@ -8,6 +8,10 @@ export class ShellController {
                 return;
             }
             shell.showItemInFolder(fullpath);
+        });
+
+        ipcMain.handle('shell-clipboard-readText', (event) => {
+            return clipboard.readText();
         });
     }
 }

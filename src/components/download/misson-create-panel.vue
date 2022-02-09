@@ -45,6 +45,7 @@
         v-model="inputUrl"
         @input="handleInput"
         @keydown.enter.stop="create"
+        @click.right.stop="handleRightClick"
       />
       <span class="absolute inline-block h-6 w-6 -left-7">
         <check-circleIcon class="h-6 w-6 text-green-600" v-show="isSupport" />
@@ -97,8 +98,14 @@ export default {
       this.isSupport = await window.api.isSupportUrl(url);
       this.lock = false;
     },
-    handleInput(event) {
-      this.isSupportUrl(event.target.value);
+    handleInput() {
+      this.isSupportUrl(this.inputUrl);
+    },
+    handleRightClick() {
+      window.api.clipboardReadText().then((text) => {
+        this.inputUrl = text;
+        this.handleInput();
+      });
     },
   },
 };

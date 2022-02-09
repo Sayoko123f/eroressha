@@ -23,6 +23,9 @@ contextBridge.exposeInMainWorld(
     },
     openExplorer(fullpath) {
         ipcRenderer.send('shell-open-explorer', fullpath);
+    },
+    async clipboardReadText() {
+        return await ipcRenderer.invoke('shell-clipboard-readText');
     }
 }
 );
