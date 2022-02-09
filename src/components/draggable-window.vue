@@ -5,7 +5,7 @@
       @mousedown.self.stop="handleMouseDown"
     >
       {{ heading }}
-      <x-icon
+      <span
         class="
           absolute
           right-2
@@ -16,8 +16,10 @@
           hover:text-gray-400
           cursor-pointer
         "
-        @click.self.stop="close"
-      />
+        @click.stop="close"
+      >
+        <x-icon />
+      </span>
     </div>
     <div class="p-2 bg-zinc-50 overflow-auto max-h-[384px] flex flex-col">
       <div v-for="(line, i) in lines" :key="i">{{ line }}</div>
@@ -42,6 +44,10 @@ export default {
   data: () => ({
     canMove: false,
   }),
+  beforeUnmount() {
+    document.onmouseup = null;
+    document.onmousemove = null;
+  },
   methods: {
     handleMouseDown(e) {
       let pos1 = 0,
@@ -69,10 +75,6 @@ export default {
 
       document.onmousemove = handleMouseMove;
       document.onmouseup = handleMouseUp;
-    },
-    BeforeUnloadEvent() {
-      document.onmouseup = null;
-      document.onmousemove = null;
     },
     close() {
       this.$emit("close");
