@@ -20,6 +20,9 @@ contextBridge.exposeInMainWorld(
     },
     isSupportUrl: async url => {
         return await ipcRenderer.invoke('download-isSupportUrl', url);
+    },
+    openExplorer(fullpath) {
+        ipcRenderer.send('shell-open-explorer', fullpath);
     }
 }
 );
