@@ -2,8 +2,9 @@
 
 import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
-import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
+// import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 import { DownloadController } from './mainprocess/download-controller.js';
+import { ShellController } from './mainprocess/shell-controller.js';
 import path from 'path';
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -71,7 +72,8 @@ app.on('ready', async () => {
   }
   console.log('app when Ready.');
   app[Symbol('download')] = new DownloadController();
-  const win = await createWindow();
+  app[Symbol('shell')] = new ShellController();
+  await createWindow();
 
   // TEST!!!
   // ipcMain.on('hello-message', (event, args) => {
