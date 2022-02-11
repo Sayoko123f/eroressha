@@ -1,5 +1,3 @@
-'use strict'
-
 import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 // import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
@@ -71,6 +69,18 @@ app.on('ready', async () => {
     // }
   }
   console.log('app when Ready.');
+
+  protocol.registerFileProtocol('album', (request, callback) => {
+    const url = request.url.replace('album://getMediaFile/', '')
+    try {
+      return callback(url)
+    }
+    catch (error) {
+      console.error(error)
+      return callback(404)
+    }
+  });
+
   app[Symbol('download')] = new DownloadController();
   app[Symbol('shell')] = new ShellController();
   await createWindow();
