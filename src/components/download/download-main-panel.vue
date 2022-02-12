@@ -1,9 +1,11 @@
 <template>
-  <div class="relative">
+  <div class="relative min-h-screen h-fit">
+    <div class="text-center py-4">
     <button class="hover:text-sky-500" @click="createPanelOpened = true">
-      <span class="align-bottom">NEW</span>
+      <span class="align-bottom tracking-wide">NEW MISSION</span>
       <plus-circle-icon class="inline-block h-6 w-6" />
     </button>
+    </div>
     <center-center-modal
       v-if="createPanelOpened"
       @close="handleCreatePanelClose"
@@ -11,7 +13,7 @@
     >
       <misson-create-panel :close="parent.close" />
     </center-center-modal>
-    <misson-status-panel />
+    <misson-status-panel class="px-4"/>
   </div>
 </template>
 

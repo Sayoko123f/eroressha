@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <div class="" v-for="item in items" :key="item.id">
-      <h1>
+      <h1 class="text-center font-bold py-2">
         <router-link
           :to="{ name: 'viewer-album-detail', params: { id: item.id } }"
           >{{ item.title }}</router-link

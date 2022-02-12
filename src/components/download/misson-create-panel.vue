@@ -51,14 +51,15 @@
         <check-circleIcon class="h-6 w-6 text-green-600" v-show="isSupport" />
         <x-circleIcon class="h-6 w-6 text-red-600" v-show="!isSupport" />
       </span>
-      <button
-        class="absolute inline-block h-6 w-6 -right-8"
-        :class="lock ? 'opacity-60' : 'opacity-100'"
-        @click="create"
-        :disabled="lock"
-      >
-        <plus-circleIcon class="h-6 w-6 hover:text-sky-500" />
-      </button>
+    </div>
+    <div
+      class="w-1/3 text-center hover:text-sky-500 py-1 select-none"
+      role="button"
+      :class="lock ? 'opacity-60' : 'opacity-100'"
+      @click.stop="create"
+    >
+      <span class="align-bottom tracking-wide">NEW</span>
+      <plus-circleIcon class="inline-block h-6 w-6" />
     </div>
   </div>
 </template>
@@ -85,7 +86,7 @@ export default {
   methods: {
     create() {
       console.log("create Click");
-      if (!this.isSupport) {
+      if (!this.isSupport || this.lock) {
         return;
       }
       window.api.send("download-create", this.inputUrl);

@@ -13,7 +13,11 @@
         <!-- Cover -->
         <div class="border">
           <div class="">
-            <img :src="`${item.savepath}/${item.coverName}`" alt="" />
+            <img
+              class="w-[300px] h-[400px]"
+              :src="`${item.savepath}/${item.coverName}`"
+              alt=""
+            />
           </div>
         </div>
         <!-- Information -->
