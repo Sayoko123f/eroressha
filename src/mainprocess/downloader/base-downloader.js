@@ -80,7 +80,8 @@ export class BaseDownloader extends EventEmitter {
             if (success) {
                 continue;
             }
-            const filename = path.resolve(this.savepath, `${count + 1}${path.extname(url)}`);
+            const prefix = `${this.aid ? `${this.aid}_` : ''}`;
+            const filename = path.resolve(this.savepath, `${prefix}${count + 1}${path.extname(url)}`);
             try {
                 this.log(`Fetching ${url}...`);
                 await downloadFile(filename, url);
