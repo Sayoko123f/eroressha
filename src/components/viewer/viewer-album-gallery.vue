@@ -7,6 +7,15 @@
           >{{ item.title }}</router-link
         >
       </h1>
+      <div class="flex justify-center">
+        <!-- Full screen button -->
+        <button
+          class="px-2 py-1 hover:text-sky-500"
+          @click="handleRequestFullscreen"
+        >
+          <arrows-expand-icon class="w-6 h-6 inline-block" />
+        </button>
+      </div>
       <div class="flex flex-wrap items-center gap-2">
         <div class="mx-auto" v-for="(name, i) in item.imageNames" :key="i">
           <img
@@ -23,8 +32,10 @@
 
 
 <script>
+import { ArrowsExpandIcon } from "@heroicons/vue/solid";
 import * as store from "../../api-loki.js";
 export default {
+  components: { ArrowsExpandIcon },
   data: () => ({
     items: [],
   }),
@@ -56,6 +67,15 @@ export default {
   computed: {
     id() {
       return parseInt(this.$route.params.id);
+    },
+  },
+  methods: {
+    handleRequestFullscreen() {
+      if (document.webkitIsFullScreen) {
+        document.exitFullscreen();
+      } else {
+        document.documentElement.requestFullscreen();
+      }
     },
   },
 };
