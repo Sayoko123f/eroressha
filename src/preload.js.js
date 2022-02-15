@@ -1,5 +1,4 @@
 import { contextBridge, ipcRenderer } from "electron";
-console.log('Hello preload.');
 console.log(process.env);
 contextBridge.exposeInMainWorld(
     "api", {
@@ -26,6 +25,19 @@ contextBridge.exposeInMainWorld(
     },
     async clipboardReadText() {
         return await ipcRenderer.invoke('shell-clipboard-readText');
+    },
+    async showOpenDialog(options) {
+        return await ipcRenderer.invoke('shell-selectCoverName', options);
+    },
+
+    /**
+     * 
+     * @param {string} fullpath Pathlike
+     * @param {RegExp} pattern Regex pattern for extname
+     * @returns 
+     */
+    async readdir(fullpath, pattern) {
+        return await ipcRenderer.invoke('shell-readdir', fullpath, pattern);
     }
 }
 );
