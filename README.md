@@ -1,26 +1,25 @@
-# erosha
+# Electron 漫畫下載兼閱讀器(已棄坑)
 
-## Project setup
-https://cli.vuejs.org/guide/installation.html
-https://nklayman.github.io/vue-cli-plugin-electron-builder/guide/#installation
-```
-npm install
-```
+## 基於
+- [Vue CLI Plugin Electron Builder](https://nklayman.github.io/vue-cli-plugin-electron-builder/guide/#installation)
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## 指令
+- npm run electron:serve 啟動開發伺服器
+- npm run electron:build 打包構建應用 
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## demo
+![](demo/1.jpg)
+![](demo/2.jpg)
 
-### Lints and fixes files
-```
-npm run lint
-```
+## 已棄坑
+棄坑原因主要是餅畫太大，這工具我是想要做三大功能：下載、檢視、管理，但功能太多加上我對 elecetron 的不熟悉(第一次使用)變得很難開發，也許下次改用 TypeScript 來協助。
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+資料我是使用瀏覽器內建的 IndexDB 儲存，但我覺得在搜尋方面不是很好用，或許下次試試看 MongoDB 或 SQLite。
+
+介面也是一個問題，因為我雖然有稍微規劃過後端功能，但前端完全是想到什麼寫什麼，所以介面變得很……
+
+但在這次的開發中我也是有收穫，主要是學習到了 Electron 的使用以及增加對本機應用程式的理解： 
+
+mainprocess 與 renderprocess 概念，切割權限提高安全性；
+
+使用 ipc 通訊、background.js、preload.js 功能劃分等等；
